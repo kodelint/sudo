@@ -9,7 +9,7 @@ pipeline {
     triggers {
         pollSCM('H * * * *')
     }
-//     stages {
+    stages {
 //         stage('\u27A1 Dependencies for Docker and ChefDK') {
 //             steps {
 //                 sh '''apt-get update
