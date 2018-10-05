@@ -1,48 +1,28 @@
 pipeline {
-    agent {
-        docker {
-            reuseNode false
-            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
-            image 'chef/chefdk'
-        }
-    }
+    agent any
     triggers {
         pollSCM('H * * * *')
     }
     stages {
-//         stage('\u27A1 Dependencies for Docker and ChefDK') {
-//             steps {
-//                 sh '''apt-get update
-// apt-get install -y sudo git build-essential apt-transport-https ca-certificates curl software-properties-common'''
-//             }
-//         }
-//         stage('\u27A1 Install Docker-CE') {
-//             steps {
-//                 sh '''curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-// add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-// apt-get update
-// apt-get install -y docker-ce'''
-//             }
-//         }
-//         stage('\u27A1 Start Docker') {
-//             steps {
-//                 sh 'service docker start'
-//             }
-//         }
-//         stage('\u27A1 Verify Docker') {
-//             steps {
-//                 sh 'docker run --rm hello-world'
-//             }
-//         }
-        stage('\u27A1 Verify ChefDK') {
+        stage('\u27A1 Check if Docker running') {
             steps {
-                sh '''/opt/chefdk/embedded/bin/chef --version
-/opt/chefdk/embedded/bin/cookstyle --version
-/opt/chefdk/embedded/bin/foodcritic --version'''
+                sh 'service docker status'
+            }
+        }
+        stage('\u27A1 Verify Docker') {
+            steps {
+                sh 'docker run --rm hello-world'
+            }
+        }
+        stage('\u27A1 Verify ChefDK from Jenkins') {
+            steps {
+                sh '''/usr/bin/chef --version
+                      /usr/bin/cookstyle --version
+                      /usr/bin/foodcritic --version'''
             }
         }
         stage('\u27A1 Verify Kitchen') {
-            steps { sh 'KITCHEN_LOCAL_YAML=.kitchen.dokken.yml /opt/chefdk/embedded/bin/kitchen list'
+            steps { sh 'KITCHEN_LOCAL_YAML=.kitchen.dokken.yml /usr/bin/kitchen list'
             }
         }
         stage('\u27A1 Run test-kitchen') {

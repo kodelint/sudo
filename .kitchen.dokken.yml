@@ -14,25 +14,6 @@ verifier:
   name: inspec
 
 platforms:
-- name: amazonlinux
-  driver:
-    image: dokken/amazonlinux
-    pid_one_command: /sbin/init
-
-- name: debian-8
-  driver:
-    image: dokken/debian-8
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN /usr/bin/apt-get update
-
-- name: debian-9
-  driver:
-    image: dokken/debian-9
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN /usr/bin/apt-get update
-
 - name: centos-6
   driver:
     image: dokken/centos-6
@@ -41,11 +22,6 @@ platforms:
 - name: centos-7
   driver:
     image: dokken/centos-7
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: fedora-latest
-  driver:
-    image: dokken/fedora-latest
     pid_one_command: /usr/lib/systemd/systemd
 
 - name: ubuntu-14.04
@@ -61,15 +37,3 @@ platforms:
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-
-- name: ubuntu-18.04
-  driver:
-    image: dokken/ubuntu-18.04
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN /usr/bin/apt-get update
-
-- name: opensuse-leap
-  driver:
-    image: dokken/opensuse-leap-42
-    pid_one_command: /bin/systemd
